@@ -1,4 +1,4 @@
-package com.example.wander
+package com.example.wander.view
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,15 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.wander.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kotlinx.android.synthetic.main.activity_maps.*
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -32,35 +33,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        bottom_nav_maps.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.normal_map -> {
+                    map.mapType = GoogleMap.MAP_TYPE_NORMAL
+                    true
+                }
+
+                R.id.hybrid_map -> {
+                    map.mapType = GoogleMap.MAP_TYPE_HYBRID
+                    true
+                }
+                R.id.satellite_map -> {
+                    map.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                    true
+                }
+                R.id.terrain_map -> {
+                    map.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
     }
 
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.map_options, menu)
-        return true
-    }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        // Change the map type based on the user's selection.
-        R.id.normal_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_NORMAL
-            true
-        }
-        R.id.hybrid_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_HYBRID
-            true
-        }
-        R.id.satellite_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            true
-        }
-        R.id.terrain_map -> {
-            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            true
-        }
-        else -> super.onOptionsItemSelected(item)
+        //val inflater = layoutInflater.inflate(R.layout.bottom_nav)
+
+        return true
     }
 
     /**
